@@ -173,11 +173,10 @@ class CategoryController extends Controller
         if($category->count() > 0) {
             foreach ($category as $key => $value) {
                 CategoryModel::where('id',$value['id'])->delete();
-                echo $value['id'].'<br>';
             }
         }
         CategoryModel::where('id',$id)->delete();
-        echo "đã xóa";
+        return redirect()->route("category-product.index");
     }
     public function getCategory($id) {
         return CategoryModel::where('id',$id)->first();

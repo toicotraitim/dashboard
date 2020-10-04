@@ -19,7 +19,7 @@ class CreateCategoryProductTable extends Migration
             $table->string('category_description');
             $table->string('category_parent');
             $table->string('category_thumb')->nullable($value = true);
-            $table->string('category_active');
+            $table->integer('category_active');
             $table->timestamps();
         });
     }

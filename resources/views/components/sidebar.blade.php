@@ -30,7 +30,7 @@ with font-awesome or any other icon font library -->
                 <li class="nav-item">
                   <a href="{{route('category-product.index')}}" class="nav-link {{$activeUrl[4] == 'category-product' &&  (isset($activeUrl[5]) === FALSE || $activeUrl[5] > 0) ? 'active':''}}">
                     <i class="far fa-circle nav-icon"></i>
-                    <p>Liệt kê chuyên mục</p>
+                    <p>Danh sách chuyên mục</p>
                   </a>
                 </li>
               </ul>
@@ -47,13 +47,13 @@ with font-awesome or any other icon font library -->
               <li class="nav-item">
                 <a href="{{route('post-product.create')}}" class="nav-link {{$activeUrl[4] == 'post-product' && isset($activeUrl[5]) && $activeUrl[5] == 'create' ? 'active':''}}">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Tạo chuyên mục</p>
+                  <p>Tạo sản phẩm</p>
                 </a>
               </li>
               <li class="nav-item">
                 <a href="{{route('post-product.index')}}" class="nav-link {{$activeUrl[4] == 'post-product' &&  (isset($activeUrl[5]) === FALSE || $activeUrl[5] > 0) ? 'active':''}}">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Liệt kê chuyên mục</p>
+                  <p>Danh sách sản phẩm</p>
                 </a>
               </li>
             </ul>
@@ -70,13 +70,13 @@ with font-awesome or any other icon font library -->
             <li class="nav-item">
               <a href="{{route('menu.create')}}" class="nav-link {{$activeUrl[4] == 'menu' && isset($activeUrl[5]) && $activeUrl[5] == 'create' ? 'active':''}}">
                 <i class="far fa-circle nav-icon"></i>
-                <p>Tạo chuyên mục</p>
+                <p>Tạo menu</p>
               </a>
             </li>
             <li class="nav-item">
               <a href="{{route('menu.index')}}" class="nav-link {{$activeUrl[4] == 'menu' &&  (isset($activeUrl[5]) === FALSE || $activeUrl[5] > 0) ? 'active':''}}">
                 <i class="far fa-circle nav-icon"></i>
-                <p>Liệt kê chuyên mục</p>
+                <p>Danh sách menu</p>
               </a>
             </li>
           </ul>

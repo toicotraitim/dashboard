@@ -10,7 +10,7 @@
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a href="/">Home</a></li>
                     @foreach ($url as $key => $item)
-                        @if ($key >= 3)
+                        @if ($key >= 4)
                             @if ($loop->last)
                                 <li class="breadcrumb-item"> {{ ucwords(implode(" ",explode("-",$item))) }} </li>                       
                                 
