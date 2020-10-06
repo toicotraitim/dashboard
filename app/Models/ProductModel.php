@@ -5,11 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class PostModel extends Model
+class ProductModel extends Model
 {
     use HasFactory;
-    protected $table = 'post_product';
+    protected $table = 'products';
     protected $fillable = [
-        'post_name', 'post_description', 'category', 'post_images', 'post_active',
+        'name', 'price', 'feature_image','content', 'user_id', 'category_id', 'active'
     ];
 }

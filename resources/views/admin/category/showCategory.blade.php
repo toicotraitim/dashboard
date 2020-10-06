@@ -1,5 +1,8 @@
 @extends('master')
 @section('title', 'Sub Categories')
+@section('css')
+    
+@endsection
 @section('content')
 <div class="card card-primary card-outline">
     <div class="card-header">
@@ -82,4 +85,6 @@
     <!-- /.card-body -->
   </div>
   {{$category->links("pagination::bootstrap-4")}}
+@endsection
+@section('js')
 @endsection

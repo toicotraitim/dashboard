@@ -1,7 +1,10 @@
 @extends('master')
 @section('title', 'Create Category')
+@section('css')
+    <link href="plugins/select2/css/select2.min.css" rel="stylesheet" />
+    
+@endsection
 @section('content')
-
     <!-- general form elements disabled -->
     <div class="card card-primary mx-lg-5">
         <div class="card-header">
@@ -43,7 +46,7 @@
                 </div> 
                 <div class="form-group">
                     <label>Select</label>
-                    <select class="form-control" name="category_parent">
+                    <select class="form-control select2 select2-hidden-accessible" style="width: 100%;" data-select2-id="1" tabindex="-1" aria-hidden="true" name="category_parent">
                         <option value="0">Chuyên mục mẹ</option>
                         {!! $htmlOption !!}
                     
@@ -74,4 +77,25 @@
     <!-- /.card -->
     
     <!-- /.card -->
+@endsection
+@section('js')
+    <script src="plugins/select2/js/select2.full.min.js"></script>
+    <!-- bs-custom-file-input -->
+    <script src="plugins/bs-custom-file-input/bs-custom-file-input.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(".select2").select2();
+            bsCustomFileInput.init();
+            document.getElementById("customFile").addEventListener("change",function(event) {
+                let reader = new FileReader();
+                    reader.onload = function(){
+                        var output = document.getElementById('output');
+                        output.style.display = 'block';
+                        output.src = reader.result;
+                    };
+                    reader.readAsDataURL(event.target.files[0]);
+            });
+        });
+    </script>
+    
 @endsection

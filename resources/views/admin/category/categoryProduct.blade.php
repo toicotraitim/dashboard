@@ -1,5 +1,8 @@
 @extends('master')
 @section('title', 'Categories Product')
+@section('css')
+    
+@endsection
 @section('content')
 <div class="card card-primary card-outline">
   <div class="card-header">
@@ -48,7 +51,7 @@
                   </small>
               </td>
               <td>
-              <img src="{{ $item['category_thumb'] == null ? asset('storage/thumbnail.png') : asset($item['category_thumb']) }}" alt="" class="img-thumbnail" style="max-width: 200px">
+              <img src="{{ $item['category_thumb'] == null ? asset('storage/thumbnail.png') : asset($item['category_thumb']) }}" alt="" class="img-thumbnail" style="width: 200px; object-fit:cover">
               </td>
               <td>
                 <small>{{ $item['category_description'] }}</small>
@@ -82,4 +85,7 @@
   <!-- /.card-body -->
 </div>
 {{$category->links("pagination::bootstrap-4")}}
+@endsection
+@section('js')
+
 @endsection

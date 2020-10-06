@@ -1,5 +1,8 @@
 @extends('master')
 @section('title', 'Delete Category')
+@section('css')
+    
+@endsection
 @section('content')
 
     <!-- general form elements disabled -->
@@ -46,4 +49,6 @@
     <!-- /.card -->
     
     <!-- /.card -->
+@endsection
+@section('js')
 @endsection

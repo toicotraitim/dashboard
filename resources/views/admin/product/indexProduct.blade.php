@@ -1,12 +1,12 @@
 @extends('master')
-@section('title', 'Menu Parent')
+@section('title', 'Product')
 @section('css')
     
 @endsection
 @section('content')
 <div class="card card-primary card-outline">
   <div class="card-header">
-    <h3 class="card-title">Menus Parent</h3>
+    <h3 class="card-title">Danh sách sản phẩm</h3>
   </div>
   <div class="card-body p-0">
     <table class="table table-striped projects">
@@ -19,10 +19,13 @@
                   Name
                 </th>
                 <th>
+                  Price
+                </th>
+                <th>
                   Image
                 </th>
                 <th>
-                  Description
+                  Content
                 </th>
                 <th style="width: 8%" class="text-center">
                   Status
@@ -33,14 +36,14 @@
             </tr>
         </thead>
         <tbody>
-            @foreach ($menu as $key => $item)
+            @foreach ($products as $key => $item)
             <tr>
               <td>
                   #{{ $item['id'] }}
               </td>
               <td>
                   <h5 class="font-weight-bolder">
-                      {{ $item['menu_name'] }}
+                      {{ $item['name'] }}
                   </h5>
                   <small>
                     Created: {{ $item['created_at'] }}
@@ -51,13 +54,16 @@
                   </small>
               </td>
               <td>
-              <img src="{{ $item['menu_icon'] == null ? asset('storage/menu-default.png') : asset($item['menu_icon']) }}" alt="" class="img-thumbnail" style="width: 64px; object-fit:cover">
+                {{ $item['price'] }} <b> <sup>đ</sup> </b>
               </td>
               <td>
-                <small>{{ $item['menu_description'] }}</small>
+              <img src="{{ $item['feature_image'] == null ? asset('storage/thumbnail.png') : asset($item['feature_image']) }}" alt="" class="img-thumbnail" style="width: 200px; object-fit:cover">
+              </td>
+              <td>
+                <small>{!! $item['content'] !!}</small>
               </td>
               <td class="project-state">
-                  <span class="badge {{ $item['menu_active'] == 1 ? 'badge-success' : 'badge-danger' }}">{{ $item['menu_active'] == 1 ? 'Active' : 'Inactive' }}</span>
+                  <span class="badge {{ $item['active'] == 1 ? 'badge-success' : 'badge-danger' }}">{{ $item['active'] == 1 ? 'Active' : 'Inactive' }}</span>
               </td>
               <td class="project-actions text-center">
               <a class="btn btn-primary btn-sm" href="{{ route('menu.show',['menu' => $item['id']]) }}">
@@ -84,7 +90,7 @@
   </div>
   <!-- /.card-body -->
 </div>
-{{$menu->links("pagination::bootstrap-4")}}
+{{$products->links("pagination::bootstrap-4")}}
 @endsection
 @section('js')
     

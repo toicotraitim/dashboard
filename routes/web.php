@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\PostController;
+use App\Http\Controllers\AdminProductController;
 use App\Http\Controllers\MenuController;
 use App\Http\Middleware\CheckUserMiddleware;
 use App\Http\Middleware\CheckGuestMiddleware;
@@ -25,7 +25,7 @@ Route::prefix("/admin")->middleware(CheckGuestMiddleware::class)->group(function
     route::get("dashboard", [AdminController::class,"dashboard"])->name("admin.dashboard");
     route::get("/logout", [UserController::class,"logout"])->name("admin.logout");
     Route::resource("category-product",CategoryController::class);
-    Route::resource("post-product",PostController::class);
+    Route::resource("product-management",AdminProductController::class);
     Route::resource("menu",MenuController::class);
     
     

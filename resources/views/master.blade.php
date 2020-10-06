@@ -10,8 +10,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
-
-
+    <!-- css -->
+    @yield('css')
     <!-- iCheck -->
     <link rel="stylesheet" href="plugins/icheck-bootstrap/icheck-bootstrap.min.css">
 
@@ -153,7 +153,7 @@
         <!-- Main Sidebar Container -->
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- Brand Logo -->
-            <a href="index3.html" class="brand-link">
+            <a href="/admin" class="brand-link">
                 <img src="dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
                 <span class="brand-text font-weight-light">AdminLTE 3</span>
             </a>
@@ -165,7 +165,7 @@
                         <img src="dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
                     </div>
                     <div class="info">
-                        <a href="#" class="d-block">Alexander Pierce</a>
+                    <a href="#" class="d-block"> {{ Auth::user()->name }}</a>
                     </div>
                 </div>
                 <x-sidebar/>
@@ -207,12 +207,12 @@
     <!-- Bootstrap 4 -->
     <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
     <!-- ChartJS -->
-    <script src="plugins/chart.js/Chart.min.js"></script>
+    {{-- <script src="plugins/chart.js/Chart.min.js"></script> --}}
  
     <!-- overlayScrollbars -->
     <script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
-    <!-- bs-custom-file-input -->
-    <script src="plugins/bs-custom-file-input/bs-custom-file-input.min.js"></script>
+
+    @yield('js')
 
     <!-- AdminLTE App -->
     <script src="dist/js/adminlte.js"></script>
@@ -220,21 +220,7 @@
     <script src="dist/js/pages/dashboard.js"></script>
     <!-- AdminLTE for demo purposes -->
     <script src="dist/js/demo.js"></script>
-    <script type="text/javascript">
-        $(document).ready(function () {
-          bsCustomFileInput.init();
-          document.getElementById("customFile").addEventListener("change",function(event) {
-            let reader = new FileReader();
-                reader.onload = function(){
-                    var output = document.getElementById('output');
-                    output.style.display = 'block';
-                    output.src = reader.result;
-                };
-                reader.readAsDataURL(event.target.files[0]);
-          });
-                
-        });
-    </script>
+    
 </body>
 
 </html>

@@ -61,8 +61,8 @@ class CategoryController extends Controller
         if ($request->hasFile('category_thumb')) {
             $nameImg = Str::random(20);
             $extension = $request->category_thumb->extension();
-            $request->category_thumb->storeAs('/public',$nameImg.'.'.$extension);
-            $urlImg = Storage::url($nameImg.'.'.$extension);
+            $request->category_thumb->storeAs('/public/category',$nameImg.'.'.$extension);
+            $urlImg = Storage::url('category/'.$nameImg.'.'.$extension);
         }
         CategoryModel::create([
             'category_name' => $val['category_name'],
@@ -125,7 +125,7 @@ class CategoryController extends Controller
             'category_name' => 'bail|required|min:6|max:255',
             'category_description' => 'bail|required|max:1024',
             'category_parent' => 'bail|required',
-            'category_thumb' => 'image|mimes:jpeg,jpg,png|max:1024'
+            'category_thumb' => 'bail|image|mimes:jpeg,jpg,png|max:1024'
         ]);
         if($request->category_active == 'on') {
             $active = 1;
@@ -136,15 +136,15 @@ class CategoryController extends Controller
         if ($request->hasFile('category_thumb')) {
             //xoa anh cu
             if($urlImg != "") {
-                $oldImg = explode("/",$urlImg)[2];
-                Storage::delete('public/'.$oldImg);
+                $oldImg = explode("/",$urlImg)[3];
+                Storage::delete('public/category/'.$oldImg);
                 echo $oldImg;
             }
 
             $nameImg = Str::random(20);
             $extension = $request->category_thumb->extension();
-            $request->category_thumb->storeAs('/public',$nameImg.'.'.$extension);
-            $urlImg = Storage::url($nameImg.'.'.$extension);
+            $request->category_thumb->storeAs('/public/category/',$nameImg.'.'.$extension);
+            $urlImg = Storage::url('category/'.$nameImg.'.'.$extension);
             
             
         }

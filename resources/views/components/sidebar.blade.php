@@ -16,7 +16,7 @@ with font-awesome or any other icon font library -->
             <a href="{{route('category-product.index')}}" class="nav-link {{$activeUrl[4] == 'category-product' ? 'active':''}}">
                 <i class="nav-icon fas fa-folder"></i>
                 <p>
-                    Categories Pruduct
+                    Chuyên mục sản phẩm
                     <i class="fas fa-angle-left right"></i>
                 </p>
             </a>
@@ -35,23 +35,23 @@ with font-awesome or any other icon font library -->
                 </li>
               </ul>
         </li>
-        <li class="nav-item has-treeview {{$activeUrl[4] == 'post-product' ? 'menu-open':''}}">
-          <a href="{{route('category-product.index')}}" class="nav-link {{$activeUrl[4] == 'post-product' ? 'active':''}}">
+        <li class="nav-item has-treeview {{$activeUrl[4] == 'product-management' ? 'menu-open':''}}">
+          <a href="{{route('category-product.index')}}" class="nav-link {{$activeUrl[4] == 'product-management' ? 'active':''}}">
               <i class="nav-icon fas fa-book"></i>
               <p>
-                  Posts Pruduct
+                  Quản lí sản phẩm
                   <i class="fas fa-angle-left right"></i>
               </p>
           </a>
           <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="{{route('post-product.create')}}" class="nav-link {{$activeUrl[4] == 'post-product' && isset($activeUrl[5]) && $activeUrl[5] == 'create' ? 'active':''}}">
+                <a href="{{route('product-management.create')}}" class="nav-link {{$activeUrl[4] == 'product-management' && isset($activeUrl[5]) && $activeUrl[5] == 'create' ? 'active':''}}">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Tạo sản phẩm</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="{{route('post-product.index')}}" class="nav-link {{$activeUrl[4] == 'post-product' &&  (isset($activeUrl[5]) === FALSE || $activeUrl[5] > 0) ? 'active':''}}">
+                <a href="{{route('product-management.index')}}" class="nav-link {{$activeUrl[4] == 'product-management' &&  (isset($activeUrl[5]) === FALSE || $activeUrl[5] > 0) ? 'active':''}}">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Danh sách sản phẩm</p>
                 </a>

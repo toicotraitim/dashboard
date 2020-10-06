@@ -59,8 +59,8 @@ class MenuController extends Controller
         if ($request->hasFile('menu_icon')) {
             $nameImg = Str::random(20);
             $extension = $request->menu_icon->extension();
-            $request->menu_icon->storeAs('/public',$nameImg.'.'.$extension);
-            $urlImg = Storage::url($nameImg.'.'.$extension);
+            $request->menu_icon->storeAs('/public/menu',$nameImg.'.'.$extension);
+            $urlImg = Storage::url('menu/'.$nameImg.'.'.$extension);
         }
         MenuModel::create([
             'menu_name' => $val['menu_name'],
@@ -132,15 +132,15 @@ class MenuController extends Controller
         if ($request->hasFile('menu_icon')) {
             //xoa anh cu
             if($urlImg != "") {
-                $oldImg = explode("/",$urlImg)[2];
-                Storage::delete('public/'.$oldImg);
+                $oldImg = explode("/",$urlImg)[3];
+                Storage::delete('public/menu/'.$oldImg);
                 echo $oldImg;
             }
 
             $nameImg = Str::random(20);
             $extension = $request->menu_icon->extension();
-            $request->menu_icon->storeAs('/public',$nameImg.'.'.$extension);
-            $urlImg = Storage::url($nameImg.'.'.$extension);
+            $request->menu_icon->storeAs('/public/menu',$nameImg.'.'.$extension);
+            $urlImg = Storage::url('menu/'.$nameImg.'.'.$extension);
             
             
         }
