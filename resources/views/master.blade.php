@@ -216,11 +216,21 @@
 
     <!-- AdminLTE App -->
     <script src="dist/js/adminlte.js"></script>
-    <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-    <script src="dist/js/pages/dashboard.js"></script>
+
     <!-- AdminLTE for demo purposes -->
     <script src="dist/js/demo.js"></script>
-    
+    <script>
+        $("img").each(function() {
+            fetch(this.getAttribute("src"))
+            .then(response => {
+                if(response.status == 404) {
+                    this.setAttribute("src","storage/thumbnail.png");
+                }
+            });
+
+        });
+        
+    </script>
 </body>
 
 </html>

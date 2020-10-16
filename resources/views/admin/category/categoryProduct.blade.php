@@ -51,7 +51,7 @@
                   </small>
               </td>
               <td>
-              <img src="{{ $item['category_thumb'] == null ? asset('storage/thumbnail.png') : asset($item['category_thumb']) }}" alt="" class="img-thumbnail" style="width: 200px; object-fit:cover">
+              <img src="{{ $item['category_thumb'] == null ? asset('storage/thumbnail.png') : asset($item['category_thumb']) }}" alt="" class="img-thumbnail" style="width: 200px; height: 200px; object-fit: cover">
               </td>
               <td>
                 <small>{{ $item['category_description'] }}</small>

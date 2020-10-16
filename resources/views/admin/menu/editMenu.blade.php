@@ -54,12 +54,15 @@
                     </select>
                 </div>
                 <div class="form-group">
-                    <label>Ảnh chuyên mục</label>
+                    <label>Icon menu</label>
                     <div class="custom-file">
-                      <input type="file" name="menu_icon" class="custom-file-input" id="customFile">
+                      <input type="file" name="menu_icon" class="custom-file-input customFile">
                       <label class="custom-file-label" for="customFile">Choose file</label>
                     </div>
-                    <img id="output" src="{{ $menu['menu_icon'] == null ? asset('storage/menu-default.png') : asset($menu['menu_icon']) }}" alt="" class="img-thumbnail mt-2" style="max-width: 200px">
+                    <div id="outputFile" style="display: inline-block;">
+                        <img id="output" src="{{ $menu['menu_icon'] == null ? asset('storage/menu-default.png') : asset($menu['menu_icon']) }}" alt="" class="mt-2" style="width: 64px; height: 64px;">
+                    </div>
+
 
                 </div>
                 <div class="icheck-primary my-3">
@@ -84,18 +87,25 @@
     <script src="plugins/bs-custom-file-input/bs-custom-file-input.min.js"></script>
     <script type="text/javascript">
         $(document).ready(function () {
-        $(".select2").select2();
-        bsCustomFileInput.init();
-        document.getElementById("customFile").addEventListener("change",function(event) {
-            let reader = new FileReader();
-                reader.onload = function(){
-                    var output = document.getElementById('output');
-                    output.style.display = 'block';
-                    output.src = reader.result;
-                };
-                reader.readAsDataURL(event.target.files[0]);
-        });
-                
+            $(".select2").select2();
+            bsCustomFileInput.init();
+            function imagePreview(file) {
+
+                return new Promise(resolve => {
+                    let =  reader = new FileReader();
+                    reader.onload = function(event) {
+                        resolve(event.target.result);
+                    }
+                    reader.readAsDataURL(file);
+                });
+            }   
+            async function preview(element,res) {
+                let result = await imagePreview(element.files[0]);
+                $(res).html(`<img src="${result}" class="mt-2" style="width: 64px; height: 64px; object-fit: cover">`);
+            }
+            $(".customFile").change(function() {
+                preview(this,'#outputFile');
+            }); 
         });
     </script>
 @endsection

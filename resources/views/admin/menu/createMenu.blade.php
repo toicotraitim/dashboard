@@ -56,10 +56,10 @@
                     <label>Icon menu</label>
                     
                     <div class="custom-file">
-                      <input type="file" name="menu_icon" class="custom-file-input" id="customFile">
+                      <input type="file" name="menu_icon" class="custom-file-input customFile">
                       <label class="custom-file-label" for="customFile">Choose file</label>
                     </div>
-                    <img id="output" alt="" class="img-thumbnail mt-2" style="display: none; max-width: 200px">
+                    <div id="outputFile" style="display: inline-block;"></div>
 
                 </div>
                 <div class="icheck-primary my-3">
@@ -86,14 +86,22 @@
         $(document).ready(function () {
             $(".select2").select2();
             bsCustomFileInput.init();
-            document.getElementById("customFile").addEventListener("change",function(event) {
-                let reader = new FileReader();
-                    reader.onload = function(){
-                        var output = document.getElementById('output');
-                        output.style.display = 'block';
-                        output.src = reader.result;
-                    };
-                    reader.readAsDataURL(event.target.files[0]);
+            function imagePreview(file) {
+
+                return new Promise(resolve => {
+                    let =  reader = new FileReader();
+                    reader.onload = function(event) {
+                        resolve(event.target.result);
+                    }
+                    reader.readAsDataURL(file);
+                });
+            }   
+            async function preview(element,res) {
+                let result = await imagePreview(element.files[0]);
+                $(res).html(`<img src="${result}" class="mt-2" style="width: 64px; height: 64px; object-fit: cover">`);
+            }
+            $(".customFile").change(function() {
+                preview(this,'#outputFile');
             });
         });
     </script>

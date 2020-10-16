@@ -1,5 +1,5 @@
 @extends('master')
-@section('title', 'Create Product')
+@section('title', 'Edit Product')
 @section('css')
     <link href="plugins/select2/css/select2.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="plugins/summernote/summernote-bs4.css">
@@ -9,18 +9,19 @@
     <!-- general form elements disabled -->
     <div class="card card-primary mx-lg-5">
         <div class="card-header">
-            <h3 class="card-title p-2"> Tạo sản phẩm</h3>
+            <h3 class="card-title p-2"> Chỉnh sửa sản phẩm</h3>
         </div>
       <!-- /.card-header -->
         
-        <form role="form" name="form" method="POST" action="{{ route('product-management.store') }}" enctype="multipart/form-data">
+        <form role="form" name="form" method="POST" action="{{ route('product-management.update',['product_management' => $product['id']]) }}" enctype="multipart/form-data">
+            @method("PUT")
             {{ csrf_field() }}
             <div class="card-body">
                 @if (session('success'))
                     <div class="alert alert-success alert-dismissible">
                         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
                         <h5><i class="icon fas fa-check"></i>Success</h5>
-                        <b>{{ session('success') }}</b> created!
+                        <b>{{ session('success') }}</b> updated!
                     </div>
                     
                 @endif
@@ -38,16 +39,16 @@
                 <!-- text input -->
                 <div class="form-group">
                     <label>Tên sản phẩm</label>
-                    <input type="text" name="name" class="form-control p-3" placeholder="Enter ...">
+                <input type="text" name="name" class="form-control p-3" placeholder="Enter ..." value="{{ $product['name'] }}">
                 </div>
 
                 <div class="form-group">
                     <label>Nội dung</label>
-                    <textarea name="content" class="textarea" placeholder="Place some text here" style="width: 100%; height: 400px; font-size: 14px; line-height: 18px; border: 1px solid rgb(221, 221, 221); padding: 10px; display: none;"></textarea>
+                    <textarea name="content" class="textarea" placeholder="Place some text here" style="width: 100%; height: 400px; font-size: 14px; line-height: 18px; border: 1px solid rgb(221, 221, 221); padding: 10px; display: none;">{{ $product['content'] }}</textarea>
                 </div> 
                 <div class="form-group">
                     <label>Giá tiền</label>
-                    <input type="number" name="price" class="form-control p-3" placeholder="1234 đ">
+                    <input type="number" name="price" class="form-control p-3" placeholder="1234" value="{{ $product['price'] }}">
                 </div>
                 <div class="form-group">
                     <label>Chọn chuyên mục</label>
@@ -58,6 +59,7 @@
                 <div class="form-group">
                     <label>Tags</label>
                     <select name="tags[]" class="select2 select2-hidden-accessible" multiple="" data-placeholder="Select a State" style="width: 100%;" aria-hidden="true">
+                        {!! $htmlOptionTag !!}
                     </select>
                 </div>
                 <div class="form-group">
@@ -67,23 +69,23 @@
                       <input type="file" name="feature_image" class="custom-file-input customFile">
                       <label class="custom-file-label" for="customFile">Choose file</label>
                     </div>
-                    <div id="outputFile" style="display: inline-block;"></div>
+                    <div id="outputFile" style="display: inline-block;"><img id="output" src="{{ $product['feature_image'] == null ? asset('storage/thumbnail.png') : asset($product['feature_image']) }}" alt="" class="mt-2 mr-2" style="max-width: 200px; max-height: 200px;"></div>
 
                 </div>
                 <div class="form-group" id="imgs">
                     <label>Ảnh sản phẩm</label>
                     <div class="custom-file mb-2">
-                        <input type="file" name="images[]" class="custom-file-input images" multiple>
+                        <input type="file" name="images" class="custom-file-input images" multiple>
                         <label class="custom-file-label" for="customFile" style="overflow: hidden">Choose file</label>
                     </div>
-                    
+                    {!! $htmlImage !!}
                 </div>
                 
                 <div class="icheck-primary my-3">
-                    <input type="checkbox" name="active" id="checkboxPrimary1" checked="">
+                    <input type="checkbox" name="active" id="checkboxPrimary1" {{ $product['active'] == 1 ? 'checked' : ''}}>
                     <label for="checkboxPrimary1">  Hiển thị</label>
                 </div>
-                
+
             </div>
             <div class="card-footer">
                 <button type="submit" name="submit" class="btn btn-primary px-4 py-2">Submit</button>

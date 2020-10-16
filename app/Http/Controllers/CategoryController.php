@@ -138,7 +138,7 @@ class CategoryController extends Controller
             if($urlImg != "") {
                 $oldImg = explode("/",$urlImg)[3];
                 Storage::delete('public/category/'.$oldImg);
-                echo $oldImg;
+
             }
 
             $nameImg = Str::random(20);

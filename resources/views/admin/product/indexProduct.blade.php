@@ -27,10 +27,10 @@
                 <th>
                   Content
                 </th>
-                <th style="width: 8%" class="text-center">
+                <th class="text-center">
                   Status
                 </th>
-                <th style="width: 20%" class="text-center">
+                <th class="text-center">
                   Action
                 </th>
             </tr>
@@ -57,7 +57,7 @@
                 {{ $item['price'] }} <b> <sup>đ</sup> </b>
               </td>
               <td>
-              <img src="{{ $item['feature_image'] == null ? asset('storage/thumbnail.png') : asset($item['feature_image']) }}" alt="" class="img-thumbnail" style="width: 200px; object-fit:cover">
+              <img src="{{ $item['feature_image'] == null ? asset('storage/thumbnail.png') : asset($item['feature_image']) }}" alt="{{ $item['name'] }}" class="img-thumbnail" style="width: 200px; height: 200px; object-fit:cover">
               </td>
               <td>
                 <small>{!! $item['content'] !!}</small>
@@ -66,17 +66,17 @@
                   <span class="badge {{ $item['active'] == 1 ? 'badge-success' : 'badge-danger' }}">{{ $item['active'] == 1 ? 'Active' : 'Inactive' }}</span>
               </td>
               <td class="project-actions text-center">
-              <a class="btn btn-primary btn-sm" href="{{ route('menu.show',['menu' => $item['id']]) }}">
+              <a class="btn btn-primary btn-sm" href="{{ route('product-management.show',['product_management' => $item['id']]) }}">
                       <i class="fas fa-folder">
                       </i>
                       View
                   </a>
-                  <a class="btn btn-info btn-sm" href="{{ route('menu.edit',['menu' => $item['id'],'type' => 'update']) }}">
+                  <a class="btn btn-info btn-sm" href="{{ route('product-management.edit',['product_management' => $item['id'],'type' => 'update']) }}">
                       <i class="fas fa-pencil-alt">
                       </i>
                       Edit
                   </a>
-                  <a class="btn btn-danger btn-sm" href="{{ route('menu.edit',['menu' => $item['id'],'type' => 'destroy']) }}">
+                  <a class="btn btn-danger btn-sm" href="{{ route('product-management.edit',['product_management' => $item['id'],'type' => 'destroy']) }}">
                       <i class="fas fa-trash">
                       </i>
                       Delete
@@ -93,5 +93,5 @@
 {{$products->links("pagination::bootstrap-4")}}
 @endsection
 @section('js')
-    
+
 @endsection

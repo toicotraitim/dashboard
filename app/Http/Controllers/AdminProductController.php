@@ -19,9 +19,9 @@ class AdminProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    private $htmlSelect;
+    private $htmlSelectCategory;
     public function __construct() {
-        $this->htmlSelect = '';
+        $this->htmlSelectCategory = '';
     }
     public function index()
     {
@@ -37,8 +37,8 @@ class AdminProductController extends Controller
      */
     public function create()
     {
-        $htmlOption = $this->categoryParent(0);
-        return view('admin.product.createProduct',['htmlOption' => $htmlOption]);
+        $htmlOptionCategory = $this->categoryParent(0);
+        return view('admin.product.createProduct',['htmlOptionCategory' => $htmlOptionCategory]);
     }
 
     /**
@@ -49,12 +49,14 @@ class AdminProductController extends Controller
      */
     public function store(Request $request)
     {
+        $request->images = (isset($request->images) ? $request->images : []);
+        $request->tags = (isset($request->tags) ? $request->images : []);
         $val = $request->validate([
-            'name' => 'bail|required|unique:products|min:6|max:255',
+            'name' => 'bail|required|unique:products,name|min:6|max:255',
             'price' => 'bail|required|integer',
             'content' => 'bail|required',
-            'category_id' => 'bail|required',
-            'tags.*' => 'bail|required',
+            'category_id' => 'bail|required|exists:category_product,id',
+            'tags.*' => 'required',
             'feature_image' => 'bail|required|image|mimes:jpeg,jpg,png|max:5120',
             'images.*' => 'bail|required|image|mimes:jpeg,jpg,png|max:5120',
 
@@ -75,7 +77,7 @@ class AdminProductController extends Controller
         foreach ($request->images as $key => $value) {
             $nameImg = Str::random(20);
             $extension = $value->extension();
-            $request->feature_image->storeAs('/public/product',$nameImg.'.'.$extension);
+            $request->images[$key]->storeAs('/public/product',$nameImg.'.'.$extension);
             array_push($images,Storage::url('product/'.$nameImg.'.'.$extension));
         }
         $product_id = ProductModel::create([
@@ -120,9 +122,34 @@ class AdminProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request,$id)
     {
         //
+        if(ProductModel::where('id',$id)->count() == 0) abort(404);
+        if ($request->type == 'destroy'){
+            return view('admin.product.deleteProduct',['product' => $this->getProduct($id)]);
+        } else {
+            $product_tags = ProductTagsModel::where('product_id',$id)->get();
+            $htmlOptionTag = null;
+            
+            foreach ($product_tags as $val) {
+                $tag = TagsModel::where('id',$val['tag_id'])->first();
+                $htmlOptionTag .= '<option value="'.$tag['name'].'" selected> '.$tag['name'].'</option>';
+            }
+            $htmlOptionCategory = $this->categoryParent(0);
+            $htmlImage = null;
+            $product_images = ProductImagesModel::where("product_id",$id)->get();
+            foreach ($product_images as $val) {
+                $htmlImage .= '<img src="'.$val['image_path'].'" class="mt-2 mr-2" style="max-width: 200px; max-height: 200px; object-fit: cover">';
+            }
+            return view('admin.product.editProduct',[
+                'htmlOptionCategory' => $htmlOptionCategory,
+                'product' => $this->getProduct($id),
+                'htmlOptionTag' => $htmlOptionTag,
+                'htmlImage' => $htmlImage
+                ]);
+            
+        }
     }
 
     /**
@@ -135,6 +162,81 @@ class AdminProductController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $request->images = (isset($request->images) ? $request->images : []);
+        $request->tags = (isset($request->tags) ? $request->images : []);
+        $val = $request->validate([
+            'name' => 'bail|required|min:6|max:255',
+            'price' => 'bail|required|integer',
+            'content' => 'bail|required',
+            'category_id' => 'bail|required|exists:category_product,id',
+            'tags.*' => 'required',
+            'feature_image' => 'bail|image|mimes:jpeg,jpg,png|max:5120',
+            'images.*' => 'bail|required|image|mimes:jpeg,jpg,png|max:5120',
+
+        ]);
+        if($request->active == 'on') {
+            $active = 1;
+        } else {
+            $active = 0;
+        }
+        $urlImg = $this->getProduct($id)['feature_image'];
+        if ($request->hasFile('feature_image')) {
+            //xoa anh cu
+            if($urlImg != "" && file_exists($urlImg)) {
+                $oldImg = explode("/",$urlImg)[3];
+                Storage::delete('public/product/'.$oldImg);
+                echo $oldImg;
+            }
+
+            $nameImg = Str::random(20);
+            $extension = $request->feature_image->extension();
+            $request->feature_image->storeAs('/public/product/',$nameImg.'.'.$extension);
+            $urlImg = Storage::url('product/'.$nameImg.'.'.$extension);
+        }
+        $productTags = ProductTagsModel::where('product_id',$id)->get();
+        foreach ($productTags as $value) {
+            ProductTagsModel::where('id',$value['id'])->delete();
+        }
+        if(isset($request->tags)) {
+            foreach($request->tags as $value) {
+                $tag_id = TagsModel::firstOrCreate(['name' => $value])->id;
+                ProductTagsModel::firstOrCreate([
+                    'product_id' => $id,
+                    'tag_id' => $tag_id
+                ]);
+            }
+        }
+        
+        ProductModel::where('id',$id)->update([
+            'name' => $val['name'],
+            'price' => $val['price'],
+            'content' => $val['content'],
+            'category_id' => $val['category_id'],
+            'user_id' => Auth::id(),
+            'active' => $active,
+            'feature_image' => $urlImg,
+        ]);
+        $productImages = ProductImagesModel::where('product_id',$id)->get();
+        foreach($productImages as $value) {
+            $oldImg = explode("/",$value['image_path'])[3];
+            Storage::delete('public/product/'.$oldImg);
+            ProductImagesModel::where('id',$value['id'])->delete();
+
+        }
+        $images = [];
+        foreach ($request->images as $key => $value) {
+            $nameImg = Str::random(20);
+            $extension = $value->extension();
+            $request->images[$key]->storeAs('/public/product',$nameImg.'.'.$extension);
+            array_push($images,Storage::url('product/'.$nameImg.'.'.$extension));
+        }
+        foreach($images as $value) {
+            ProductImagesModel::create([
+                'image_path' => $value,
+                'product_id' => $id,
+            ]);
+        }
+        return redirect()->back()->with('success', $val['name']);
     }
 
     /**
@@ -146,6 +248,19 @@ class AdminProductController extends Controller
     public function destroy($id)
     {
         //
+        $productImages = ProductImagesModel::where("product_id",$id)->get();
+        foreach($productImages as $value) {
+            $oldImg = explode("/",$value['image_path'])[3];
+            Storage::delete('public/product/'.$oldImg);
+            ProductImagesModel::where('id',$value['id'])->delete();
+
+        }
+        $productTags = ProductTagsModel::where('product_id',$id)->get();
+        foreach ($productTags as $value) {
+            ProductTagsModel::where('id',$value['id'])->delete();
+        }
+        ProductModel::where("id",$id)->delete();
+        return redirect()->route("product-management.index");
     }
     public function getCategory($id) {
         return CategoryModel::where('id',$id)->first();
@@ -160,13 +275,16 @@ class AdminProductController extends Controller
         ])->get();
         foreach ($data as $key => $value) {
             if ($value['category_parent'] == $id) {
-                $selected = isset($cid) ? ($this->getCategory($cid)['category_parent'] == $value['id'] ? 'selected' : '') : ''; 
+                $selected = isset($cid) ? ($this->getProduct($cid)['category_id'] == $value['id'] ? 'selected' : '') : ''; 
                 $arrow = $text != '' ? $text.'> ' : $text.' ';
-                $this->htmlSelect .= '<option value="'.$value['id'].'" '.$selected.'>'.$arrow.$value['category_name'].'</p>';
+                $this->htmlSelectCategory .= '<option value="'.$value['id'].'" '.$selected.'>'.$arrow.$value['category_name'].'</p>';
                 $this->categoryParent($value['id'],$text.'----');
             }
             
         }
-        return $this->htmlSelect;
+        return $this->htmlSelectCategory;
+    }
+    public function getProduct($id) {
+        return ProductModel::where('id',$id)->first();
     }
 }
